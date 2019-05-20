@@ -18,8 +18,7 @@ RUN apk add --no-cache python3 \
   && rm -r /root/.cache \
   && cd /usr/local/bin
 
-# AWS CLI
-RUN pip install --upgrade awscli
-
-# Docker
-RUN pip install --upgrade docker
+# PIP dependencies
+ADD requirements.txt /application/
+WORKDIR /application
+RUN pip install --requirement requirements.txt
