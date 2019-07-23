@@ -1,5 +1,5 @@
 # Base image
-FROM docker:18.09-git
+FROM docker:19.03-git
 
 # Base dependencies
 RUN apk add --no-cache \
