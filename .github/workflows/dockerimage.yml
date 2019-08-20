@@ -9,7 +9,12 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Build the Docker image
-        run: docker build --file Dockerfile --tag aws-deploy:$(date +%s) .
+        uses: actions/docker/cli@master
+        args: build --file Dockerfile --tag aws-deploy .
+
+      - name: Tag the Docker image
+        uses: actions/docker/tag@master
+        args: aws-deploy slergberg/aws-deploy
 
       - name: Login to Docker Hub
         uses: actions/docker/login@master
