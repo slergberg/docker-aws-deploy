@@ -28,7 +28,6 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
 
       - name: Publish the image to Docker Hub
-        uses: actions/docker/cli-multi@master
+        uses: actions/docker/cli@master
         with:
-          args:
-            - push slergberg/aws-deploy:latest
+          args: push slergberg/aws-deploy:latest
