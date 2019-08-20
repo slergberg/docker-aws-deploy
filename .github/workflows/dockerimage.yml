@@ -10,11 +10,13 @@ jobs:
 
       - name: Build the Docker image
         uses: actions/docker/cli@master
-        args: build --file Dockerfile --tag aws-deploy .
+        with:
+          args: build --file Dockerfile --tag aws-deploy .
 
       - name: Tag the Docker image
         uses: actions/docker/tag@master
-        args: aws-deploy slergberg/aws-deploy
+        with:
+          args: aws-deploy slergberg/aws-deploy
 
       - name: Login to Docker Hub
         uses: actions/docker/login@master
