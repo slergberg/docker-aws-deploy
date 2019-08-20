@@ -14,12 +14,17 @@ jobs:
       - name: Build the Docker image
         uses: actions/docker/cli@master
         with:
-          args: build --file Dockerfile --tag aws-deploy .
+          args: build --file Dockerfile --tag ${DOCKER_IMAGE_NAME} .
+        env:
+          DOCKER_IMAGE_NAME: aws-deploy
 
       - name: Tag the Docker image
         uses: actions/docker/tag@master
         with:
-          args: aws-deploy slergberg/aws-deploy
+          args: ${DOCKER_IMAGE_NAME} ${DOCKER_ORGANIZATION_NAME}/${DOCKER_IMAGE_NAME}
+        env:
+          DOCKER_ORGANIZATION_NAME: slergberg
+          DOCKER_IMAGE_NAME: aws-deploy
 
       - name: Login to Docker Hub
         uses: actions/docker/login@master
@@ -30,4 +35,7 @@ jobs:
       - name: Publish the image to Docker Hub
         uses: actions/docker/cli@master
         with:
-          args: push slergberg/aws-deploy:latest
+          args: push ${DOCKER_ORGANIZATION_NAME}/${DOCKER_IMAGE_NAME}:latest
+        env:
+          DOCKER_ORGANIZATION_NAME: slergberg
+          DOCKER_IMAGE_NAME: aws-deploy
