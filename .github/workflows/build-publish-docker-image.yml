@@ -1,6 +1,9 @@
-name: Docker Image CI
+name: Build and publish Docker image
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -23,3 +26,9 @@ jobs:
         env:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
           DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+
+      - name: Publish the image to Docker Hub
+        uses: actions/docker/cli-multi@master
+        with:
+          args:
+            - push slergberg/aws-deploy:latest
