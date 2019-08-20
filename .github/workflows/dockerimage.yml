@@ -10,3 +10,7 @@ jobs:
 
       - name: Build the Docker image
         run: docker build --file Dockerfile --tag aws-deploy:$(date +%s) .
+
+      - name: Login to Docker Hub
+        uses: actions/docker/login@master
+        secrets: ["DOCKER_HUB_USERNAME", "DOCKER_HUB_PASSWORD"]
