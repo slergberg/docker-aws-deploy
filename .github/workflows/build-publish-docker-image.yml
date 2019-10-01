@@ -12,23 +12,19 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Build the Docker image
-        uses: actions/docker/cli@master
-        with:
-          args: build --file Dockerfile --tag ${DOCKER_ORGANIZATION_NAME}/${DOCKER_IMAGE_NAME} .
+        run: docker build --file Dockerfile --tag ${DOCKER_ORGANIZATION_NAME}/${DOCKER_IMAGE_NAME} .
         env:
           DOCKER_ORGANIZATION_NAME: slergberg
           DOCKER_IMAGE_NAME: aws-deploy
 
       - name: Login to Docker Hub registry
-        uses: actions/docker/login@master
+        run: docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: Publish the image to Docker Hub registry
-        uses: actions/docker/cli@master
-        with:
-          args: push ${DOCKER_ORGANIZATION_NAME}/${DOCKER_IMAGE_NAME}:latest
+        run: docker push ${DOCKER_ORGANIZATION_NAME}/${DOCKER_IMAGE_NAME}:latest
         env:
           DOCKER_ORGANIZATION_NAME: slergberg
           DOCKER_IMAGE_NAME: aws-deploy
@@ -39,25 +35,21 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Build the Docker image
-        uses: actions/docker/cli@master
-        with:
-          args: build --file Dockerfile --tag ${DOCKER_REGISTRY_URL}/${DOCKER_ORGANIZATION_NAME}/${DOCKER_IMAGE_NAME} .
+        run: docker build --file Dockerfile --tag ${DOCKER_REGISTRY_URL}/${DOCKER_ORGANIZATION_NAME}/${DOCKER_IMAGE_NAME} .
         env:
           DOCKER_REGISTRY_URL: docker.pkg.github.com
           DOCKER_ORGANIZATION_NAME: slergberg
           DOCKER_IMAGE_NAME: aws-deploy
 
       - name: Login to GitHub Package registry
-        uses: actions/docker/login@master
+        run: docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD} ${DOCKER_REGISTRY_URL}
         env:
           DOCKER_REGISTRY_URL: docker.pkg.github.com
-          DOCKER_USERNAME: ${{ secrets.GITHUB_PACKAGE_USERNAME }}
+          DOCKER_USERNAME: ${{ secrets.GITHUB_ACTOR }}
           DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish the image to GitHub Package registry
-        uses: actions/docker/cli@master
-        with:
-          args: push ${DOCKER_REGISTRY_URL}/${DOCKER_ORGANIZATION_NAME}/${DOCKER_IMAGE_NAME}:latest
+        run: docker push ${DOCKER_REGISTRY_URL}/${DOCKER_ORGANIZATION_NAME}/${DOCKER_IMAGE_NAME}:latest
         env:
           DOCKER_REGISTRY_URL: docker.pkg.github.com
           DOCKER_ORGANIZATION_NAME: slergberg
