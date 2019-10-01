@@ -29,28 +29,28 @@ jobs:
           DOCKER_ORGANIZATION_NAME: slergberg
           DOCKER_IMAGE_NAME: aws-deploy
 
-  build-and-publish-to-github-package-registry:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
+#   build-and-publish-to-github-package-registry:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v1
 
-      - name: Build the Docker image
-        run: docker build --file Dockerfile --tag ${DOCKER_REGISTRY_URL}/${DOCKER_ORGANIZATION_NAME}/${DOCKER_IMAGE_NAME} .
-        env:
-          DOCKER_REGISTRY_URL: docker.pkg.github.com
-          DOCKER_ORGANIZATION_NAME: slergberg
-          DOCKER_IMAGE_NAME: aws-deploy
+#       - name: Build the Docker image
+#         run: docker build --file Dockerfile --tag ${DOCKER_REGISTRY_URL}/${DOCKER_ORGANIZATION_NAME}/${DOCKER_IMAGE_NAME} .
+#         env:
+#           DOCKER_REGISTRY_URL: docker.pkg.github.com
+#           DOCKER_ORGANIZATION_NAME: slergberg
+#           DOCKER_IMAGE_NAME: aws-deploy
 
-      - name: Login to GitHub Package registry
-        run: docker login ${DOCKER_REGISTRY_URL} --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
-        env:
-          DOCKER_REGISTRY_URL: docker.pkg.github.com
-          DOCKER_USERNAME: slergberg
-          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Login to GitHub Package registry
+#         run: docker login ${DOCKER_REGISTRY_URL} --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
+#         env:
+#           DOCKER_REGISTRY_URL: docker.pkg.github.com
+#           DOCKER_USERNAME: slergberg
+#           DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish the image to GitHub Package registry
-        run: docker push ${DOCKER_REGISTRY_URL}/${DOCKER_ORGANIZATION_NAME}/${DOCKER_IMAGE_NAME}:latest
-        env:
-          DOCKER_REGISTRY_URL: docker.pkg.github.com
-          DOCKER_ORGANIZATION_NAME: slergberg
-          DOCKER_IMAGE_NAME: aws-deploy
+#       - name: Publish the image to GitHub Package registry
+#         run: docker push ${DOCKER_REGISTRY_URL}/${DOCKER_ORGANIZATION_NAME}/${DOCKER_IMAGE_NAME}:latest
+#         env:
+#           DOCKER_REGISTRY_URL: docker.pkg.github.com
+#           DOCKER_ORGANIZATION_NAME: slergberg
+#           DOCKER_IMAGE_NAME: aws-deploy
