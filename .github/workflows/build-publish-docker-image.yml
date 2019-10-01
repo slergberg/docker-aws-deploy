@@ -6,36 +6,35 @@ on:
       - master
 
 jobs:
-  build:
+  build-and-publish:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image_settings:
+          - docker_repository_url: docker.io
+            docker_repository_username: ${{ secrets.DOCKER_HUB_USERNAME }}
+            docker_repository_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+            docker_organization_name: slergberg
+            docker_image_name: aws-deploy
+          - docker_repository_url: docker.pkg.github.com
+            docker_repository_username: slergberg
+            docker_organization_name: slergberg
+            docker_image_name: aws-deploy
     steps:
       - uses: actions/checkout@v1
 
       - name: Build the Docker image
         uses: actions/docker/cli@master
         with:
-          args: build --file Dockerfile --tag ${DOCKER_IMAGE_NAME} .
-        env:
-          DOCKER_IMAGE_NAME: aws-deploy
+          args: build --file Dockerfile --tag ${{ matrix.image_settings.docker_organization_name }}/${{ matrix.image_settings.docker_image_name }} .
 
-      - name: Tag the Docker image
-        uses: actions/docker/tag@master
-        with:
-          args: ${DOCKER_IMAGE_NAME} ${DOCKER_ORGANIZATION_NAME}/${DOCKER_IMAGE_NAME}
-        env:
-          DOCKER_ORGANIZATION_NAME: slergberg
-          DOCKER_IMAGE_NAME: aws-deploy
-
-      - name: Login to Docker Hub
+      - name: Login to Docker registry
         uses: actions/docker/login@master
         env:
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_USERNAME: ${{ matrix.image_settings.docker_repository_username }}
+          DOCKER_PASSWORD: ${{ matrix.image_settings.docker_repository_password }}
 
       - name: Publish the image to Docker Hub
         uses: actions/docker/cli@master
         with:
-          args: push ${DOCKER_ORGANIZATION_NAME}/${DOCKER_IMAGE_NAME}:latest
-        env:
-          DOCKER_ORGANIZATION_NAME: slergberg
-          DOCKER_IMAGE_NAME: aws-deploy
+          args: push ${{ matrix.image_settings.docker_organization_name }}/${{ matrix.image_settings.docker_image_name }}:latest
