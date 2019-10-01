@@ -45,7 +45,7 @@ jobs:
         run: docker login ${DOCKER_REGISTRY_URL} --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
         env:
           DOCKER_REGISTRY_URL: docker.pkg.github.com
-          DOCKER_USERNAME: ${{ secrets.GITHUB_ACTOR }}
+          DOCKER_USERNAME: slergberg
           DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish the image to GitHub Package registry
