@@ -42,7 +42,7 @@ jobs:
           DOCKER_IMAGE_NAME: aws-deploy
 
       - name: Login to GitHub Package registry
-        run: docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD} ${DOCKER_REGISTRY_URL}
+        run: docker login ${DOCKER_REGISTRY_URL} --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
         env:
           DOCKER_REGISTRY_URL: docker.pkg.github.com
           DOCKER_USERNAME: ${{ secrets.GITHUB_ACTOR }}
