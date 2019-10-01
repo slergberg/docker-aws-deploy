@@ -22,8 +22,8 @@ jobs:
       - name: Login to Docker Hub registry
         uses: actions/docker/login@master
         env:
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
           DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: Publish the image to Docker Hub registry
         uses: actions/docker/cli@master
@@ -52,6 +52,7 @@ jobs:
         env:
           DOCKER_REGISTRY_URL: docker.pkg.github.com
           DOCKER_USERNAME: ${{ secrets.GITHUB_PACKAGE_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish the image to GitHub Package registry
         uses: actions/docker/cli@master
