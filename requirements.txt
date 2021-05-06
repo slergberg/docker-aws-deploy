@@ -1,2 +1,2 @@
-awscli==1.19.66
+awscli==1.19.67
 docker==5.0.0
