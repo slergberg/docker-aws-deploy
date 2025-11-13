@@ -1,5 +1,5 @@
 # Base image
-FROM docker:27-git
+FROM docker:25.0.5-git
 
 # Base dependencies
 RUN apk add --no-cache \
