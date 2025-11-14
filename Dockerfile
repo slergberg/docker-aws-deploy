@@ -2,23 +2,20 @@
 FROM docker:25.0.5-git
 
 # Base dependencies
-RUN apk add --no-cache \
-    git \
-    openssh \
-    zip
+RUN apk update && \
+    apk upgrade --no-cache && \
+    apk add --no-cache \
+        openssh \
+        zip \
+        python3 \
+        py3-pip
 
 # Python
-RUN apk add --no-cache python3 \
-  && python3 -m ensurepip \
-  && rm -r /usr/lib/python*/ensurepip \
-  && pip3 install --upgrade pip setuptools \
-  && if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip; fi \
-  && if [ ! -e /usr/bin/pydoc ]; then ln -s pydoc3 /usr/bin/pydoc; fi \
-  && if [ ! -e /usr/bin/python ]; then ln -s python3 /usr/bin/python; fi \
-  && rm -r /root/.cache \
-  && cd /usr/local/bin
+RUN ln -sf /usr/bin/python3 /usr/bin/python && \
+    ln -sf /usr/bin/pip3 /usr/bin/pip && \
+    pip install --no-cache-dir --upgrade pip setuptools
 
 # PIP dependencies
-ADD requirements.txt /application/
 WORKDIR /application
-RUN pip install --requirement requirements.txt
+COPY requirements.txt /application/
+RUN pip install --no-cache-dir --requirement requirements.txt
