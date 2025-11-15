@@ -1,5 +1,5 @@
 # Base image
-FROM docker:24-git
+FROM docker:25-git
 
 # System, Python, pip and SSH
 RUN apk update \
